@@ -1,0 +1,14 @@
+{
+  "name": "coffee.cart.pw",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Dima",
+  "type": "commonjs",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "@playwright/test": "~1.63.0",
+    "@types/node": "^26.5.0"
+  }
+}
