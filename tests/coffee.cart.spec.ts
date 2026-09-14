@@ -11,7 +11,7 @@ test(
   },
 );
 
-test("check the sum of 2 drinks", { tag: ["@positive"] }, async ({ page }) => {
+test("check the sum of 2 drinks in the cart", { tag: ["@positive"] }, async ({ page }) => {
   await page.goto("/");
   await page.locator('[data-test="Espresso"]').click();
   await page.locator('[data-test="Cappuccino"]').click();
@@ -40,7 +40,7 @@ test(
 );
 
 test(
-  "validate the drinks purchase is successful",
+  "validate that purchase of drinks is successful",
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
@@ -60,7 +60,7 @@ test(
 );
 
 test(
-  "validate promo for drinks is available",
+  "validate promo for drinks is available and Discounted drink is in place",
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
@@ -71,6 +71,10 @@ test(
     await expect(page.locator("div.promo")).toContainText(
       "It's your lucky day! Get an extra cup of Mocha for $4.",
     );
+
+    await page.getByRole("button", {name: "Yes, of course!"}).click();
+    await page.locator('[aria-label="Cart page"]').click();
+    await expect(page.locator('div').filter({ hasText: /^\(Discounted\) Mocha$/ })).toBeVisible();
   },
 );
 
@@ -97,7 +101,7 @@ test(
 );
 
 test(
-  "validate empty cart has a error message",
+  "validate empty cart has an error message",
   { tag: ["@negative"] },
   async ({ page }) => {
     await page.goto("/");
@@ -132,13 +136,20 @@ test(
     await page.goto("/");
     await page.locator('[data-test="Espresso"]').click();
     await page.locator('[data-test="checkout"]').click();
+
+    const emailInput = page
+      .getByRole("textbox", { name: "Email" });
     await page.getByRole("textbox", { name: "Name" }).fill("trust");
-    await page
-      .getByRole("textbox", { name: "Email" })
-      .fill("trust-not-an-email");
+    await emailInput.fill("invalid-email-format");
     await page.getByRole("button", { name: "Submit" }).click();
 
-    await expect(page.locator('[class="snackbar success"]')).not.toBeVisible();
+    const validationMessage = await emailInput.evaluate(
+      (el: HTMLInputElement) => el.validationMessage,
+    );
+    
+    expect(validationMessage).toContain(
+      "Please include an '@' in the email address",
+    );
   },
 );
 
