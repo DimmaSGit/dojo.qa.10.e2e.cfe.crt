@@ -7,7 +7,7 @@ test(
     await page.goto("/");
     await page.locator('[data-test="Espresso"]').click();
 
-    expect(page.locator('[aria-label="Cart page"]')).toContainText("1");
+    await expect(page.locator('[aria-label="Cart page"]')).toContainText("1");
   },
 );
 
@@ -16,7 +16,7 @@ test("check the sum of 2 drinks", { tag: ["@positive"] }, async ({ page }) => {
   await page.locator('[data-test="Espresso"]').click();
   await page.locator('[data-test="Cappuccino"]').click();
 
-  expect(page.locator('[data-test="checkout"]')).toContainText("29");
+  await expect(page.locator('[data-test="checkout"]')).toContainText("29");
 });
 
 test(
@@ -68,7 +68,7 @@ test(
     await page.locator('[data-test="Cappuccino"]').click();
     await page.locator('[data-test="Americano"]').click();
 
-    expect(page.locator("div.promo")).toContainText(
+    await expect(page.locator("div.promo")).toContainText(
       "It's your lucky day! Get an extra cup of Mocha for $4.",
     );
   },
@@ -84,11 +84,13 @@ test(
     await page.locator('[data-test="Cappuccino"]').click();
     await page.locator('[aria-label="Cart page"]').click();
 
-    expect(page.locator("div").filter({ hasText: /^Espresso$/ })).toBeVisible();
-    expect(
+    await expect(
+      page.locator("div").filter({ hasText: /^Espresso$/ }),
+    ).toBeVisible();
+    await expect(
       page.locator("div").filter({ hasText: /^Espresso Macchiato$/ }),
     ).toBeVisible();
-    expect(
+    await expect(
       page.locator("div").filter({ hasText: /^Cappuccino$/ }),
     ).toBeVisible();
   },
@@ -102,7 +104,7 @@ test(
 
     await page.locator('[aria-label="Cart page"]').click();
 
-    expect(
+    await expect(
       page.locator("p").filter({ hasText: /^No coffee, go add some.$/ }),
     ).toBeVisible();
   },
