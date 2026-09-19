@@ -12,6 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  timeout: 30 * 1000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -30,13 +31,29 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    video: "retain-on-failure",
+    screenshot: "only-on-failure",
+    actionTimeout: 30 * 1000,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: "coffee-cart",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "https://coffee-cart.app/",
+        testIdAttribute: "data-test",
+      },
     },
+    // {
+    //   name: "",
+    //   testDir: "tests/aria-attributes",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     baseURL: "http://104.168.59.50/laboratory/aria",
+    //     testIdAttribute: "data-test",
+    //   },
+    // },
   ],
 });
