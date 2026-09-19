@@ -5,7 +5,7 @@ test(
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
+    await page.getByTestId("Espresso").click();
 
     await expect(page.locator('[aria-label="Cart page"]')).toContainText("1");
   },
@@ -13,10 +13,10 @@ test(
 
 test("check the sum of 2 drinks in the cart", { tag: ["@positive"] }, async ({ page }) => {
   await page.goto("/");
-  await page.locator('[data-test="Espresso"]').click();
-  await page.locator('[data-test="Cappuccino"]').click();
+  await page.getByTestId("Espresso").click();
+  await page.getByTestId("Cappuccino").click();
 
-  await expect(page.locator('[data-test="checkout"]')).toContainText("29");
+  await expect(page.getByTestId("checkout")).toContainText("29");
 });
 
 test(
@@ -24,9 +24,9 @@ test(
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Cappuccino"]').click();
-    await page.locator('[data-test="Americano"]').click();
-    await page.locator('[data-test="checkout"]').click();
+    await page.getByTestId("Cappuccino").click();
+    await page.getByTestId("Americano").click();
+    await page.getByTestId("checkout").click();
     await page.getByRole("textbox", { name: "Name" }).fill("trust");
     await page.getByRole("textbox", { name: "Email" }).fill("trust@gm.com");
 
@@ -44,9 +44,9 @@ test(
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Cappuccino"]').click();
-    await page.locator('[data-test="Americano"]').click();
-    await page.locator('[data-test="checkout"]').click();
+    await page.getByTestId("Cappuccino").click();
+    await page.getByTestId("Americano").click();
+    await page.getByTestId("checkout").click();
     await page.getByRole("textbox", { name: "Name" }).fill("trust");
     await page.getByRole("textbox", { name: "Email" }).fill("trust@gm.com");
     await page.getByRole("checkbox", { name: "Promotion checkbox" }).check();
@@ -64,9 +64,9 @@ test(
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
-    await page.locator('[data-test="Cappuccino"]').click();
-    await page.locator('[data-test="Americano"]').click();
+    await page.getByTestId("Espresso").click();
+    await page.getByTestId("Cappuccino").click();
+    await page.getByTestId("Americano").click();
 
     await expect(page.locator("div.promo")).toContainText(
       "It's your lucky day! Get an extra cup of Mocha for $4.",
@@ -83,9 +83,9 @@ test(
   { tag: ["@positive"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
-    await page.locator('[data-test="Espresso_Macchiato"]').click();
-    await page.locator('[data-test="Cappuccino"]').click();
+    await page.getByTestId("Espresso").click();
+    await page.getByTestId("Espresso_Macchiato").click();
+    await page.getByTestId("Cappuccino").click();
     await page.locator('[aria-label="Cart page"]').click();
 
     await expect(
@@ -119,8 +119,8 @@ test(
   { tag: ["@negative"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
-    await page.locator('[data-test="checkout"]').click();
+    await page.getByTestId("Espresso").click();
+    await page.getByTestId("checkout").click();
     await page.getByRole("button", { name: "Submit" }).click();
 
     await expect(page.locator('[class="snackbar success"]')).not.toBeVisible();
@@ -134,8 +134,8 @@ test(
   { tag: ["@negative"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
-    await page.locator('[data-test="checkout"]').click();
+    await page.getByTestId("Espresso").click();
+    await page.getByTestId("checkout").click();
 
     const emailInput = page
       .getByRole("textbox", { name: "Email" });
@@ -158,7 +158,7 @@ test(
   { tag: ["@negative"] },
   async ({ page }) => {
     await page.goto("/");
-    await page.locator('[data-test="Espresso"]').click();
+    await page.getByTestId("Espresso").click();
     await page.locator('[aria-label="Cart page"]').click();
     await page.getByRole("button", { name: "Remove one Espresso" }).click();
 
