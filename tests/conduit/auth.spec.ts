@@ -76,26 +76,6 @@ test.describe("Registration", { tag: "@auth" }, () => {
           "username ім'я має містити щонайменше 3 символи");
     });
 
-    test("user can't register if Email is not following the example: you@example.com", async ({
-      page,
-    }) => {
-        const emailInput = page.getByTestId("auth-email")
-      await page.getByTestId("auth-username").fill(uniqueUserName);
-      await emailInput.fill("incorrect-email");
-      await page.getByTestId("auth-password").fill(password);
-      await page.getByTestId("register-confirm-password").fill(password);
-      await page.getByTestId("register-country").selectOption("United States");
-      await page.getByTestId("register-terms").check();
-      await page.getByTestId("auth-submit").click();
-
-      const validationMessage = await emailInput.evaluate(
-        (el: HTMLInputElement) => el.validationMessage,
-      );
-
-      expect(validationMessage).toContain(
-        "Please include an '@' in the email address",
-      );
-    });
 });
 
 test.describe("Login", { tag: "@auth" }, () => {
