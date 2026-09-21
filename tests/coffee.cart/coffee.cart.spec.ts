@@ -1,18 +1,21 @@
 import { test, expect } from '@playwright/test';
 
+test.describe("coffee-cart flow", { tag: "@regression" }, () => {
+  test.beforeEach(async ({ page}) => {
+    page.goto("/")
+  })
+
 test(
   "successfully add a drink to the cart",
   { tag: ["@positive"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
 
-    await expect(page.locator('[aria-label="Cart page"]')).toContainText("1");
+    await expect(await page.getByRole("link", { name:"Cart page"})).toContainText("1");
   },
 );
 
 test("check the sum of 2 drinks in the cart", { tag: ["@positive"] }, async ({ page }) => {
-  await page.goto("/");
   await page.getByTestId("Espresso").click();
   await page.getByTestId("Cappuccino").click();
 
@@ -23,7 +26,6 @@ test(
   "validate the email and name for purchase",
   { tag: ["@positive"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Cappuccino").click();
     await page.getByTestId("Americano").click();
     await page.getByTestId("checkout").click();
@@ -43,7 +45,6 @@ test(
   "validate that purchase of drinks is successful",
   { tag: ["@positive"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Cappuccino").click();
     await page.getByTestId("Americano").click();
     await page.getByTestId("checkout").click();
@@ -52,10 +53,12 @@ test(
     await page.getByRole("checkbox", { name: "Promotion checkbox" }).check();
     await page.getByRole("button", { name: "Submit" }).click();
 
-    await expect(page.locator('[class="snackbar success"]')).toBeVisible();
-    await expect(page.locator('[class="snackbar success"]')).toContainText(
-      "Thanks for your purchase",
-    );
+    await expect(page.getByRole("button", {name: "Thanks for your purchase. Please check your email for payment."})).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: "Thanks for your purchase. Please check your email for payment.",
+      }),
+    ).toContainText("Thanks for your purchase");
   },
 );
 
@@ -63,7 +66,6 @@ test(
   "validate promo for drinks is available and Discounted drink is in place",
   { tag: ["@positive"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
     await page.getByTestId("Cappuccino").click();
     await page.getByTestId("Americano").click();
@@ -73,7 +75,7 @@ test(
     );
 
     await page.getByRole("button", {name: "Yes, of course!"}).click();
-    await page.locator('[aria-label="Cart page"]').click();
+    await page.getByRole("link", { name:"Cart page"}).click();
     await expect(page.locator('div').filter({ hasText: /^\(Discounted\) Mocha$/ })).toBeVisible();
   },
 );
@@ -82,11 +84,10 @@ test(
   "validate the cart has specific drinks",
   { tag: ["@positive"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
     await page.getByTestId("Espresso_Macchiato").click();
     await page.getByTestId("Cappuccino").click();
-    await page.locator('[aria-label="Cart page"]').click();
+    await page.getByRole("link", { name: "Cart page" }).click();
 
     await expect(
       page.locator("div").filter({ hasText: /^Espresso$/ }),
@@ -104,9 +105,7 @@ test(
   "validate empty cart has an error message",
   { tag: ["@negative"] },
   async ({ page }) => {
-    await page.goto("/");
-
-    await page.locator('[aria-label="Cart page"]').click();
+    await page.getByRole("link", { name: "Cart page" }).click();
 
     await expect(
       page.locator("p").filter({ hasText: /^No coffee, go add some.$/ }),
@@ -118,12 +117,14 @@ test(
   "validate checkout is rejected when name and email are empty",
   { tag: ["@negative"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
     await page.getByTestId("checkout").click();
     await page.getByRole("button", { name: "Submit" }).click();
-
-    await expect(page.locator('[class="snackbar success"]')).not.toBeVisible();
+await expect(
+  page.getByRole("button", {
+    name: "Thanks for your purchase. Please check your email for payment.",
+  }),
+).not.toBeVisible();
     await expect(page.getByRole("textbox", { name: "Name" })).toHaveValue("");
     await expect(page.getByRole("textbox", { name: "Email" })).toHaveValue("");
   },
@@ -133,7 +134,6 @@ test(
   "validate checkout is rejected with an invalid email format",
   { tag: ["@negative"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
     await page.getByTestId("checkout").click();
 
@@ -157,16 +157,15 @@ test(
   "validate removing the only item empties the cart",
   { tag: ["@negative"] },
   async ({ page }) => {
-    await page.goto("/");
     await page.getByTestId("Espresso").click();
-    await page.locator('[aria-label="Cart page"]').click();
+    await page.getByRole("link", { name:"Cart page"}).click();
     await page.getByRole("button", { name: "Remove one Espresso" }).click();
 
-    await expect(page.locator('[aria-label="Cart page"]')).toContainText(
-      "cart (0)",
-    );
+    await expect(page.getByRole("link", { name: "Cart page" }),
+    ).toContainText("cart (0)");
     await expect(
       page.locator("p").filter({ hasText: /^No coffee, go add some.$/ }),
     ).toBeVisible();
   },
 );
+});
