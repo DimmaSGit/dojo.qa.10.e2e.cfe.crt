@@ -46,21 +46,20 @@ export default defineConfig({
         testIdAttribute: "data-test",
       },
     },
-    {
-      name: "conduit",
-      use: {
-        ...devices["Desktop Chrome"],
-        baseURL: "http://104.168.59.50/articles",
-      },
-    },
     // {
-    //   name: "",
-    //   testDir: "tests/aria-attributes",
+    //   name: "conduit",
     //   use: {
     //     ...devices["Desktop Chrome"],
-    //     baseURL: "http://104.168.59.50/laboratory/aria",
-    //     testIdAttribute: "data-test",
+    //     baseURL: "http://104.168.59.50/articles",
     //   },
     // },
+    {
+      name: "coffee-cart-css",
+      testDir: "tests/coffee.cart/coffee.cart.CSS.spec.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "https://coffee-cart.app/",
+      },
+    },
   ],
 });
