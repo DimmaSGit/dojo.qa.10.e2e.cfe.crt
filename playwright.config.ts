@@ -15,7 +15,7 @@ export default defineConfig({
   timeout: 30 * 1000,
   testDir: "./tests",
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -47,13 +47,19 @@ export default defineConfig({
       },
     },
     // {
-    //   name: "",
-    //   testDir: "tests/aria-attributes",
+    //   name: "conduit",
     //   use: {
     //     ...devices["Desktop Chrome"],
-    //     baseURL: "http://104.168.59.50/laboratory/aria",
-    //     testIdAttribute: "data-test",
+    //     baseURL: "http://104.168.59.50/articles",
     //   },
     // },
+    {
+      name: "coffee-cart-css",
+      testDir: "tests/coffee.cart/coffee.cart.CSS.spec.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "https://coffee-cart.app/",
+      },
+    },
   ],
 });
