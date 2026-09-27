@@ -5,6 +5,7 @@ test.describe("Sorting web table - xpath", () => {
   let creatingLocator: Locator;
   let searchingLocator: Locator;
   let loadingLocator: Locator;
+  let selectedCount: Locator;
 
   test.beforeEach(async ({ page }) => {
     await page.goto("http://104.168.59.50/laboratory/interactions");
@@ -21,21 +22,26 @@ test.describe("Sorting web table - xpath", () => {
     loadingLocator = page.locator(
       '//input[contains(@aria-label, "Вибрати Завантаження файлу")]',
     );
+    selectedCount = page.locator('//span[@data-testid="interactions-selected-count"]');
   });
 
   test("rows are successfully checked", async ({ page }) => {
     await authorizationLocator.click();
-    await creatingLocator.click();
-    await searchingLocator.click();
-    await loadingLocator.click();
-
     await expect(authorizationLocator).toBeChecked();
+    await expect(selectedCount).toContainText("1");
+
+    await creatingLocator.click();
     await expect(creatingLocator).toBeChecked();
+    await expect(selectedCount).toContainText("2");
+
+    await searchingLocator.click();
     await expect(searchingLocator).toBeChecked();
+    await expect(selectedCount).toContainText("3");
+
+    await loadingLocator.click();
     await expect(loadingLocator).toBeChecked();
-    await expect(
-      page.locator('//span[@data-testid="interactions-selected-count"]'),
-    ).toContainText('4');
+    await expect(selectedCount).toContainText("4");
+
   });
 
   test("validate rows and columns counts", async ({
