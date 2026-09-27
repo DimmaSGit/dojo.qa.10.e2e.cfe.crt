@@ -12,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 30 * 1000,
+  timeout: 30_000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -31,13 +31,21 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    video: "retain-on-failure",
-    screenshot: "only-on-failure",
-    actionTimeout: 30 * 1000,
+    // video: "retain-on-failure",
+    // screenshot: "only-on-failure",
+    actionTimeout: 30_000,
   },
 
   /* Configure projects for major browsers */
   projects: [
+    {
+      name: "xpath-practice",
+      testDir:'tests/interactions',
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "http://104.168.59.50/laboratory/interactions",
+      },
+    },
     {
       name: "coffee-cart",
       use: {
