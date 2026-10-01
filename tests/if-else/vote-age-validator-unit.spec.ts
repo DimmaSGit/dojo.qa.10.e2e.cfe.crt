@@ -11,8 +11,8 @@ test("vote-age-validation - 18", async () => {
     expect(message).toBe("Ви можете голосувати.");
 });
 
-test("vote-age-validation - 30", async () => {
-    const message = getVotingMessage(30);
+test("vote-age-validation - 19", async () => {
+    const message = getVotingMessage(19);
     expect(message).toBe("Ви можете голосувати.");
 });
 test("vote-age-validation - -19", async () => {
