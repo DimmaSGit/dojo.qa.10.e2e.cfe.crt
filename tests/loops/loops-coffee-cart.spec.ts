@@ -17,7 +17,7 @@ test(
         await cupBodyLocator.nth(i).click()
     }
 
-    await expect(await page.getByRole("link", { name:"Cart page"})).toContainText("9");
+    await expect(page.getByRole("link", { name:"Cart page"})).toContainText("9");
   },
 );
 
