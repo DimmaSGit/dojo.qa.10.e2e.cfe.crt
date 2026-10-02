@@ -42,10 +42,15 @@ test(
 test("check the sum of 100 Mocha in the cart", { tag: ["@positive"] }, async ({ page }) => {
   
   const mochaLocator = page.getByTestId("Mocha");
+  const orderCount = 100
 
-  await mochaLocator.click();
+  for(let i = 0; i < orderCount;i++){
+    await mochaLocator.click();
+  }
 
-  await expect(page.getByTestId("checkout")).toContainText("29");
+  const expectedPrice = 8 * orderCount;
+
+  await expect(page.getByTestId("checkout")).toHaveText(`Total: $${expectedPrice}00`);
 })
 
 });
