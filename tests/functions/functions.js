@@ -37,3 +37,36 @@ function isExamPassedRef(studentScore) {
 }
 
 console.log(isExamPassedRef(77)); 
+
+// Function declaration - uses hoisting, you can call it up top
+function camelCase(x,y,z = 'default'){
+    console.log("Say Hi!");
+    console.log(x, y, z);
+}
+camelCase()
+
+// function has it's own this.
+function testThis(){
+    this.arrow = 'testy'
+    return this.arrow;
+}
+console.log(typeof testThis);
+console.log(testThis());
+
+
+// Function expression
+const returnSomething = function(){
+
+}
+
+// arrow function - no hosting, TDZ error: 'can't access "arrow" before initialization'
+// no it's own this.
+(() => console.log('self calling')())
+
+//  variable 
+const arrow = () => console.log('self calling');
+arrow()
+
+const testReturn = () => 'this is qa senpai';
+console.log(testReturn());
+
