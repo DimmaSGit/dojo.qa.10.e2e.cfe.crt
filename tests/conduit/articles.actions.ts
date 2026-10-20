@@ -16,7 +16,7 @@ export type TestArticle = {
     body: string;
 }
 
-export async function registerNewUser(
+export async function registerUser(
   request: APIRequestContext,
 ){
   const username = `user-${faker.string.alphanumeric(8)}`;
@@ -33,7 +33,7 @@ export async function registerNewUser(
   return { username, email, password, token: body.user.token };
 }
 
-export async function loginNewUser(
+export async function loginUser(
   page: Page,
   user: Pick<TestUser, "email" | "password" | "username">,
 ){
@@ -47,14 +47,14 @@ export async function loginNewUser(
   await expect(page.getByTestId("nav-profile")).toContainText(user.username);
 }
 
-export async function createNewArticle(
-  page: Page ) : Promise<TestArticle> {
-  const article: TestArticle = {
+export async function createArticle(
+  page: Page,
+  article = {
     title: `Title-${faker.string.alphanumeric(8)}`,
     description: `Desc-${faker.string.alphanumeric(15)}`,
     body: `Body-${faker.string.alphanumeric(25)}`,
-  };
-
+  },
+){
   await page.getByTestId("nav-new-article").click();
   await page.getByTestId("editor-title").fill(article.title);
   await page.getByTestId("editor-description").fill(article.description);
@@ -83,5 +83,6 @@ export async function assertArticlesListed(
       missing.push(article.title);
     }
   }
+  expect(missing.length, `expected missing articles to be 0, but got ${missing}`).toBe(0)
 }
 

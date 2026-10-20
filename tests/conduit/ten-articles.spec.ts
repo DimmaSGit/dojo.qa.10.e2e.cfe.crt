@@ -1,19 +1,18 @@
 import { test, expect } from "@playwright/test";
 import {
-  registerNewUser,
-  loginNewUser,
+  registerUser,
+  loginUser,
   TestUser,
-  createNewArticle,
+  createArticle,
   TestArticle,
-  assertArticlesListed
 } from "./articles.actions";
 
 test.describe("Create ten articles", { tag: "@auth" }, () => {
   let user: TestUser;
 
   test.beforeEach(async ({ page, request }) => {
-    user = await registerNewUser(request);
-    await loginNewUser(page, user);
+    user = await registerUser(request);
+    await loginUser(page, user);
   });
 
   test("CON-0010 user creates 10 new articles successfully", async ({
@@ -24,7 +23,7 @@ test.describe("Create ten articles", { tag: "@auth" }, () => {
     const created: TestArticle[] = [];
 
     for (let i = 0; i < 10; i++) {
-      created.push(await createNewArticle(page));
+      created.push(await createArticle(page));
     }
 
     expect(created).toHaveLength(10);
