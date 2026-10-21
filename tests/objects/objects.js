@@ -115,3 +115,16 @@ console.log(dog);
 console.log(deepDog);
 
 // const copyDog = JSON.parse(JSON,stringify(dog))
+
+const tasks = ["login", "checkout", "logout"];
+tasks.unshift("setup");
+tasks.splice(1, 2);
+
+console.log(tasks, tasks.at(-1), tasks.length);
+
+const user = { id: 1 };
+const cache = new Map();
+cache.set(user, "перший результат");
+cache.set(user, "оновлений результат");
+
+console.log(cache.size, cache.get(user), cache.has({ id: 1 }));
